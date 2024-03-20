@@ -11,4 +11,14 @@ public class PlayerProperties : MonoBehaviour
     {
         Health = 10;
     }
+
+    public void TakeDamage(int damage)
+    {
+        Health -= damage;
+    }
+
+    public void IncreaseScore(int score)
+    {
+        Score += score;
+    }
 }

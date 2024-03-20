@@ -1,32 +1,36 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CollisionHandler : MonoBehaviour
 {
-    private CharacterController _characterController;
     private PlayerProperties _playerProperties;
+    private UIController _uiController;
 
     private void Start()
     {
-        _characterController = GetComponent<CharacterController>();
         _playerProperties = GetComponent<PlayerProperties>();
+        _uiController = FindObjectOfType<UIController>();
     }
 
-    //private void OnControllerColliderHit(ControllerColliderHit hit)
-    //{
-    //    if (hit.collider.CompareTag("Box"))
-    //    {
-    //        playerProperties.Health--;
-    //        Debug.Log(playerProperties.Health);
-    //    }
-    //}
-
-    private void OnCollisionEnter(Collision collision)
+    private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if (collision.gameObject.CompareTag("Box")) 
+        if (hit.collider.CompareTag("Box"))
         {
-            Debug.Log("Box");
+            _playerProperties.TakeDamage(1);
+            _uiController.UpdateTexts();
+            Destroy(hit.collider.gameObject);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Coin"))
+        {
+            _playerProperties.IncreaseScore(1);
+            _uiController.UpdateTexts();
+            Destroy(other.gameObject);
         }
     }
 }
