@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class CollisionHandler : MonoBehaviour
 {
-    private CharacterController characterController;
-    private PlayerProperties playerProperties;
+    private CharacterController _characterController;
+    private PlayerProperties _playerProperties;
 
     private void Start()
     {
-        characterController = GetComponent<CharacterController>();
-        playerProperties = GetComponent<PlayerProperties>();
+        _characterController = GetComponent<CharacterController>();
+        _playerProperties = GetComponent<PlayerProperties>();
     }
 
     //private void OnControllerColliderHit(ControllerColliderHit hit)
