@@ -1,14 +1,22 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using StarterAssets;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIController : MonoBehaviour
 {
     [Header("HUD Texts")]
     [SerializeField] private TMP_Text _healthText;
     [SerializeField] private TMP_Text _scoreText;
+
+    [Header("Game Over")]
+    [SerializeField] private GameObject _gameOverPanel;
+
+    [Header("Win")] 
+    [SerializeField] private GameObject _winPanel;
 
     private PlayerProperties _playerProperties;
 
@@ -33,15 +41,39 @@ public class UIController : MonoBehaviour
         _scoreText.text = $"Score: {currentScore}";
     }
 
+    private void HandlePlayerDeath()
+    {
+        _gameOverPanel.SetActive(true);
+    }
+
+    private void HandlePlayerWin()
+    {
+        _winPanel.SetActive(true);
+    }
+
+    public void OnClickPlayAgainButton()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void OnClickQuitButton()
+    {
+        Application.Quit();
+    }
+
     private void SubscribeEvents()
     {
         _playerProperties.OnHealthChanged += UpdateHealthText;
         _playerProperties.OnScoreChanged += UpdateScoreText;
+        _playerProperties.OnDeath += HandlePlayerDeath;
+        _playerProperties.OnWin += HandlePlayerWin;
     }
 
     private void UnsubscribeEvents()
     {
         _playerProperties.OnHealthChanged -= UpdateHealthText;
         _playerProperties.OnScoreChanged -= UpdateScoreText;
+        _playerProperties.OnDeath -= HandlePlayerDeath;
+        _playerProperties.OnWin -= HandlePlayerWin;
     }
 }
