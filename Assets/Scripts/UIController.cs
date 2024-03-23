@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -14,11 +15,33 @@ public class UIController : MonoBehaviour
     private void Start()
     {
         _playerProperties = FindObjectOfType<PlayerProperties>();
+        SubscribeEvents();
     }
 
-    public void UpdateTexts()
+    private void OnDisable()
     {
-        _healthText.text = $"Health: {_playerProperties.Health}";
-        _scoreText.text = $"Score: {_playerProperties.Score}";
+        UnsubscribeEvents();
+    }
+
+    private void UpdateHealthText(int currentHealth)
+    {
+        _healthText.text = $"Health: {currentHealth}";
+    }
+
+    private void UpdateScoreText(int currentScore)
+    {
+        _scoreText.text = $"Score: {currentScore}";
+    }
+
+    private void SubscribeEvents()
+    {
+        _playerProperties.OnHealthChanged += UpdateHealthText;
+        _playerProperties.OnScoreChanged += UpdateScoreText;
+    }
+
+    private void UnsubscribeEvents()
+    {
+        _playerProperties.OnHealthChanged -= UpdateHealthText;
+        _playerProperties.OnScoreChanged -= UpdateScoreText;
     }
 }

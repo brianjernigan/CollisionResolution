@@ -1,24 +1,62 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerProperties : MonoBehaviour
 {
-    public int Health { get; set; }
-    public int Score { get; set; }
+    private int Health { get; set; }
+    private int Score { get; set; }
+    
+    public event Action<int> OnHealthChanged;
+    public event Action OnDeath;
 
+    public event Action<int> OnScoreChanged;
+    public event Action OnWin;
+    
     private void Start()
     {
         Health = 10;
     }
-
-    public void TakeDamage(int damage)
+    
+    private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        Health -= damage;
+        if (hit.collider.CompareTag("Spike"))
+        {
+            TakeDamage(1);
+            Destroy(hit.collider.gameObject);
+        }
     }
 
-    public void IncreaseScore(int score)
+    private void OnTriggerEnter(Collider other)
     {
-        Score += score;
+        if (other.gameObject.CompareTag("Coin"))
+        {
+            IncreaseScore(1);
+            Destroy(other.gameObject);
+        }
+    }
+
+    private void TakeDamage(int damage)
+    {
+        Health -= damage;
+        Health = Mathf.Max(Health, 0);
+        OnHealthChanged?.Invoke(Health);
+
+        if (Health == 0)
+        {
+            OnDeath?.Invoke();
+        }
+    }
+
+    private void IncreaseScore(int amount)
+    {
+        Score += amount;
+        OnScoreChanged?.Invoke(Score);
+
+        if (Score == 10)
+        {
+            OnWin?.Invoke();
+        }
     }
 }
