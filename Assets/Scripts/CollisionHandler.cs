@@ -16,7 +16,7 @@ public class CollisionHandler : MonoBehaviour
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if (hit.collider.CompareTag("Box"))
+        if (hit.collider.CompareTag("Spike"))
         {
             _playerProperties.TakeDamage(1);
             _uiController.UpdateTexts();
