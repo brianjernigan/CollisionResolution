@@ -16,6 +16,10 @@ public class PlayerProperties : MonoBehaviour
     public event Action<int> OnScoreChanged;
     public event Action OnWin;
     
+    [Header("Audio")] 
+    [SerializeField] private AudioSource _hurtAudio;
+    [SerializeField] private AudioSource _coinAudio;
+    
     private void Start()
     {
         Health = 10;
@@ -45,6 +49,9 @@ public class PlayerProperties : MonoBehaviour
         Health = Mathf.Max(Health, 0);
         OnHealthChanged?.Invoke(Health);
 
+        _hurtAudio.time = 0.4f;
+        _hurtAudio.Play();
+
         if (Health == 0)
         {
             IsDead = true;
@@ -56,6 +63,9 @@ public class PlayerProperties : MonoBehaviour
     {
         Score += amount;
         OnScoreChanged?.Invoke(Score);
+
+        _coinAudio.time = 0.3f;
+        _coinAudio.Play();
 
         if (Score == 10)
         {

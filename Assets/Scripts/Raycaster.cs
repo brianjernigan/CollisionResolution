@@ -7,6 +7,9 @@ public class Raycaster : MonoBehaviour
 {
     [SerializeField] private Camera _mainCam;
     [SerializeField] private LayerMask _destructibleObjects;
+
+    [SerializeField] private AudioSource _laserAudio;
+    [SerializeField] private AudioSource _explosionAudio;
     
     private void Update()
     {
@@ -18,7 +21,12 @@ public class Raycaster : MonoBehaviour
 
         if (Physics.Raycast(ray, out var hit, Mathf.Infinity, _destructibleObjects))
         {
+            _explosionAudio.Play();
             Destroy(hit.collider.gameObject);
+        }
+        else
+        {
+            _laserAudio.Play();
         }
     }
 }
