@@ -116,15 +116,13 @@ namespace StarterAssets
 
 		private void Update()
 		{
-			if (_playerProperties.IsDead) return;
-			JumpAndGravity();
-			GroundedCheck();
-			Move();
+				JumpAndGravity();
+				GroundedCheck();
+				Move();
 		}
 
 		private void LateUpdate()
 		{
-			if (_playerProperties.IsDead) return;
 			CameraRotation();
 		}
 
@@ -137,6 +135,7 @@ namespace StarterAssets
 
 		private void CameraRotation()
 		{
+			if (_playerProperties.IsDead) return;
 			// if there is an input
 			if (_input.look.sqrMagnitude >= _threshold)
 			{
@@ -151,7 +150,7 @@ namespace StarterAssets
 
 				// Update Cinemachine camera target pitch
 				CinemachineCameraTarget.transform.localRotation = Quaternion.Euler(_cinemachineTargetPitch, 0.0f, 0.0f);
-
+				
 				// rotate the player left and right
 				transform.Rotate(Vector3.up * _rotationVelocity);
 			}
@@ -159,6 +158,7 @@ namespace StarterAssets
 
 		private void Move()
 		{
+			if (_playerProperties.IsDead) return;
 			// set target speed based on move speed, sprint speed and if sprint is pressed
 			float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
 
