@@ -86,6 +86,8 @@ namespace StarterAssets
 			}
 		}
 
+		private PlayerProperties _playerProperties;
+
 		private void Awake()
 		{
 			// get a reference to our main camera
@@ -93,6 +95,8 @@ namespace StarterAssets
 			{
 				_mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
 			}
+
+			_playerProperties = FindObjectOfType<PlayerProperties>();
 		}
 
 		private void Start()
@@ -112,6 +116,7 @@ namespace StarterAssets
 
 		private void Update()
 		{
+			if (_playerProperties.IsDead) return;
 			JumpAndGravity();
 			GroundedCheck();
 			Move();
@@ -119,6 +124,7 @@ namespace StarterAssets
 
 		private void LateUpdate()
 		{
+			if (_playerProperties.IsDead) return;
 			CameraRotation();
 		}
 

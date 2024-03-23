@@ -8,6 +8,8 @@ public class PlayerProperties : MonoBehaviour
     private int Health { get; set; }
     private int Score { get; set; }
     
+    public bool IsDead { get; set; }
+    
     public event Action<int> OnHealthChanged;
     public event Action OnDeath;
 
@@ -45,6 +47,7 @@ public class PlayerProperties : MonoBehaviour
 
         if (Health == 0)
         {
+            IsDead = true;
             OnDeath?.Invoke();
         }
     }
